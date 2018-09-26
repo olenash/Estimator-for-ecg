@@ -30,7 +30,6 @@ gcloud ml-engine local train \
 --eval-noisy-files $EVAL_NOISY_DATA \
 --train-steps 100 \
 --job-dir $OUTPUT_PATH \
---eval-steps 100
 ```
 
 ### Deploy job

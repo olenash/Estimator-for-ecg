@@ -17,11 +17,13 @@ def run_experiment(hparams):
     train_input_func = tf.estimator.inputs.numpy_input_fn(model.input_func(hparams.train_noisy_files),
                                                           model.input_func(hparams.train_clean_files),
                                                           batch_size=hparams.train_batch_size,
+                                                          num_epochs=100,
                                                           shuffle=True)
 
     eval_input_func = tf.estimator.inputs.numpy_input_fn(model.input_func(hparams.eval_noisy_files),
                                                          model.input_func(hparams.eval_clean_files),
                                                          batch_size=hparams.eval_batch_size,
+                                                         num_epochs=100,
                                                          shuffle=True)
 
     denoising_gan = tfgan.estimator.GANEstimator(model_dir=hparams.job_dir,
