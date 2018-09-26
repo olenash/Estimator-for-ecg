@@ -36,7 +36,7 @@ def run_experiment(hparams):
                                                 )
 
     denoising_gan.train(train_input_func, steps=hparams.train_steps)
-    denoising_gan.evaluate(eval_input_func, steps=hparam.eval_steps)
+    denoising_gan.evaluate(eval_input_func)
 
 
     #add export_savedmodel
@@ -115,16 +115,6 @@ if __name__ == '__main__':
         Steps to run the training job for. If --num-epochs is not specified,
         this must be. Otherwise the training job will run indefinitely.\
         """,
-          type=int
-      )
-
-      parser.add_argument(
-          '--eval-steps',
-          help="""\
-        Number of steps to run evalution for at each checkpoint.
-        If unspecified will run until the input from --eval-files is exhausted
-        """,
-          default=None,
           type=int
       )
 
