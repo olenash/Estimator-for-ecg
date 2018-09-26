@@ -35,6 +35,13 @@ gcloud ml-engine local train \
 ### Deploy job
 
 ```
+TRAIN_CLEAN_DATA=gs://$BUCKET_NAME/data/temp_trY.pklz
+TRAIN_NOISY_DATA=gs://$BUCKET_NAME/data/temp_trX.pklz
+EVAL_CLEAN_DATA=gs://$BUCKET_NAME/data/temp_teY.pklz
+EVAL_NOISY_DATA=gs://$BUCKET_NAME/data/temp_teX.pklz
+```
+
+```
 gcloud ml-engine jobs submit training $JOB_NAME \
 --job-dir $OUTPUT_PATH \
 --runtime-version 1.10 \

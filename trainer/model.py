@@ -14,7 +14,8 @@ tf.logging.set_verbosity(tf.logging.ERROR)
 
 
 def input_func(file_name):
-    data = pickle.load(open(file_name[0], 'rb'))
+    with open(file_name[0], 'rb') as f:
+        data = pickle.load(f)
     return data.astype(np.float32)
 
 
