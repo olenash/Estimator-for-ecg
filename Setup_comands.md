@@ -7,10 +7,10 @@ REGION=europe-west1
 ```
 
 ```
-TRAIN_CLEAN_DATA=gs://$BUCKET_NAME/temp_trY.pklz
-TRAIN_NOISY_DATA=gs://$BUCKET_NAME/temp_trX.pklz
-EVAL_CLEAN_DATA=gs://$BUCKET_NAME/temp_teY.pklz
-EVAL_NOISY_DATA=gs://$BUCKET_NAME/temp_teX.pklz
+TRAIN_CLEAN_DATA=temp_trY.pklz
+TRAIN_NOISY_DATA=temp_trX.pklz
+EVAL_CLEAN_DATA=temp_teY.pklz
+EVAL_NOISY_DATA=temp_teX.pklz
 ```
 
 ```
@@ -18,6 +18,23 @@ JOB_NAME=ecg1
 OUTPUT_PATH=gs://$BUCKET_NAME/$JOB_NAME
 echo $OUTPUT_PATH
 ```
+Train localy
+```
+gcloud ml-engine local train \
+--module-name trainer.task \
+--package-path trainer/ \
+-- \
+--train-clean-files $TRAIN_CLEAN_DATA \
+--train-noisy-files $TRAIN_NOISY_DATA \
+--eval-clean-files $EVAL_CLEAN_DATA \
+--eval-noisy-files $EVAL_NOISY_DATA \
+--train-steps 100 \
+--job-dir $OUTPUT_PATH \
+--eval-steps 100
+```
+
+### Deploy job
+
 ```
 gcloud ml-engine jobs submit training $JOB_NAME \
 --job-dir $OUTPUT_PATH \
