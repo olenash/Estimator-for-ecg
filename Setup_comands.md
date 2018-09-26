@@ -1,8 +1,8 @@
-cloudshell_open --repo_url "https://github.com/olenash/Estimator_for_ecg" --page "editor" "
+cloudshell_open --repo_url "https://github.com/olenash/Estimator_for_ecg" --page "editor"
 
 
-PROJECT_ID=$datasciencegroup-216409
-BUCKET_NAME=$ecg-denoise-demo-mlengine
+PROJECT_ID=datasciencegroup-216409
+BUCKET_NAME=ecg-denoise-demo-mlengine
 echo $BUCKET_NAME
 REGION=us-central1
 
@@ -31,3 +31,9 @@ gcloud ml-engine jobs submit training $JOB_NAME \
 --eval-clean-files $EVAL_CLEAN_DATA \
 --eval-noisy-files $EVAL_NOISY_DATA \
 --train-steps 500 \
+
+gcloud ml-engine jobs stream-logs $JOB_NAME
+
+gsutil ls -r $OUTPUT_PATH
+
+tensorboard --logdir=$OUTPUT_PATH --port=8080
