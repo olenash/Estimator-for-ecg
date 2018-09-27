@@ -17,29 +17,29 @@ def run_experiment(hparams):
     train_input_func = tf.estimator.inputs.numpy_input_fn(model.input_func(hparams.train_noisy_files),
                                                           model.input_func(hparams.train_clean_files),
                                                           batch_size=hparams.train_batch_size,
-                                                          num_epochs=100,
+                                                          num_epochs=hparams.num_epochs,
                                                           shuffle=True)
 
     eval_input_func = tf.estimator.inputs.numpy_input_fn(model.input_func(hparams.eval_noisy_files),
                                                          model.input_func(hparams.eval_clean_files),
                                                          batch_size=hparams.eval_batch_size,
-                                                         num_epochs=100,
-                                                         shuffle=True)
+                                                         shuffle=False)
 
     denoising_gan = tfgan.estimator.GANEstimator(model_dir=hparams.job_dir,
                                                  generator_fn=model.generator_fn,
                                                  discriminator_fn=model.discriminator_fn,
                                                  generator_loss_fn=tfgan.losses.minimax_generator_loss,
                                                  discriminator_loss_fn=tfgan.losses.minimax_discriminator_loss,
-                                                 generator_optimizer=tf.train.AdamOptimizer(hparams.learning_rate, beta1=0.5),
-                                                 discriminator_optimizer=tf.train.AdamOptimizer(hparams.learning_rate, beta1=0.5),
+                                                 generator_optimizer=tf.train.AdamOptimizer(hparams.learning_rate,
+                                                                                            beta1=0.5),
+                                                 discriminator_optimizer=tf.train.AdamOptimizer(hparams.learning_rate,
+                                                                                                beta1=0.5),
                                                  add_summaries=tfgan.estimator.SummaryType.VARIABLES,
                                                  use_loss_summaries=True
-                                                )
+                                                 )
 
     denoising_gan.train(train_input_func, steps=hparams.train_steps)
     denoising_gan.evaluate(eval_input_func)
-
 
     #add export_savedmodel
 
