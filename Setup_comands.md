@@ -14,7 +14,8 @@ EVAL_NOISY_DATA=temp_teX.pklz
 ```
 
 ```
-JOB_NAME=ecg1
+DATE=`date '+%Y%m%d_%H%M%S'`
+export JOB_NAME=ecg_$DATE
 OUTPUT_PATH=gs://$BUCKET_NAME/$JOB_NAME
 echo $OUTPUT_PATH
 ```
@@ -63,4 +64,8 @@ gsutil ls -r $OUTPUT_PATH
 ```
 ```
 tensorboard --logdir=$OUTPUT_PATH --port=8080
+```
+
+```
+gcloud compute ssh [instance name] -- -L 5000:localhost:5000
 ```

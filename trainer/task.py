@@ -14,8 +14,8 @@ tf.logging.set_verbosity(tf.logging.ERROR)
 
 def run_experiment(hparams):
     """Run the training and evaluate using the high level API"""
-    train_input_func = tf.estimator.inputs.numpy_input_fn(model.input_func(hparams.train_noisy_files),
-                                                          model.input_func(hparams.train_clean_files),
+    train_input_func = tf.estimator.inputs.numpy_input_fn(tf.py_func(model.input_func, hparams.train_noisy_files, tf.float32),
+                                                          tf.py_func(model.input_func, hparams.train_clean_files, tf.float32),
                                                           batch_size=hparams.train_batch_size,
                                                           num_epochs=hparams.num_epochs,
                                                           shuffle=True)
